@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: tomer79sagi/wwii_missions
+    container_name: psql-wwii
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: missions_db
+    ports:
+      - "5437:5432"
+
+  flask:
+    build: .
+    container_name: flask_app
+    environment:
+      DATABASE_URL: "postgresql://admin:1234@db:5432/missions_db"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
